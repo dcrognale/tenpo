@@ -6,10 +6,10 @@ import com.challenge.tenpo.repositories.LogRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,15 +24,20 @@ public class LogService {
   @Autowired
   LogRepository logRepository;
 
-  public void logRequest(HttpServletResponse resp, HttpServletRequest req, Object body) throws JsonProcessingException {
+  public void logRequest(HttpServletResponse resp, HttpServletRequest req,
+                         Object responseBody,
+                         Object requestBody) throws JsonProcessingException {
 
     ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-    String json = ow.writeValueAsString(body);
+    String reqJson = ow.writeValueAsString(requestBody);
+    String respJson = ow.writeValueAsString(responseBody);
+
     LogEntity.builder()
         .dateCreated(LocalDateTime.now())
         .endpoint(req.getRequestURI())
         .httpStatus(resp.getStatus())
-        .response(json)
+        .responseBody(respJson)
+        .requestBody(reqJson)
         .build();
   }
 

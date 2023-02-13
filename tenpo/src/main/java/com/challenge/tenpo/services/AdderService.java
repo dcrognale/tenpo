@@ -3,6 +3,7 @@ package com.challenge.tenpo.services;
 import com.challenge.tenpo.dtos.PercentageDTO;
 import com.challenge.tenpo.exceptions.RetryException;
 import java.util.Optional;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,14 +28,14 @@ public class AdderService {
   private final RestTemplate restTemplate;
   private static final String VALIDATION_PERCENTAGE_ERROR = "Percentage is not possible to calculate";
 
-  //@Value("${MAX_RETRY}")
-  private Integer maxRetry = 3;
+  @Value("${MAX_RETRY}")
+  private Integer maxRetry;
 
-  //@Value("${BASE_PATH}")
-  private String basePath = "http://localhost:8081";
+  @Value("${BASE_PATH}")
+  private String basePath;
 
-  //@Value("${PERCENTAGE_PATH}")
-  private String percentagePath = "/percentage/available";
+  @Value("${PERCENTAGE_PATH}")
+  private String percentagePath;
 
   private final int DELAY = 30 * 60 * 1000;
 
@@ -56,7 +56,8 @@ public class AdderService {
             (HttpStatus.INTERNAL_SERVER_ERROR, VALIDATION_PERCENTAGE_ERROR));
   }
 
-  @Scheduled(initialDelay = DELAY, fixedRate = DELAY)
+  @PostConstruct
+  @Scheduled(fixedRate = DELAY)
   private void getPercentage() throws RetryException {
 
     PercentageDTO percentageDTO = callApiWithRetries();
@@ -84,10 +85,5 @@ public class AdderService {
     }
 
     return response.getBody();
-  }
-
-  @Recover
-  private void onRecover() {
-    System.out.println("Recovery...");
   }
 }

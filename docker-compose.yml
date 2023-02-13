@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14.1-alpine
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tenpoDB
+    ports:
+      - '5432:5432'
+
+  externo:
+    image: 'external:percentageAPI'
+    build:
+      context: ./percentageAPI
+    ports:
+      - "8081:8081"
+    container_name: externalTenpoAPI
+    
+  tenpo:
+    image: 'challenge:tenpo'
+    build:
+      context: ./tenpo
+    ports:
+      - "8080:8080"
+    container_name: tenpo
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tenpoDB
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - BASE_PATH=http://external:8081
+      - MAX_RETRY=3
+      - DURATION_REQUEST=300
+      - PERCENTAGE_PATH=/percentage/available

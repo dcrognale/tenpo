@@ -1,12 +1,12 @@
 package com.challenge.tenpo.DBEntities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,8 +23,10 @@ public class LogEntity {
   private String endpoint;
   @Column(name = "httpStatus")
   private Integer httpStatus;
-  @Column(name = "response", columnDefinition = "TEXT")
-  private String response;
+  @Column(name = "requestBody", columnDefinition = "TEXT")
+  private String requestBody;
+  @Column(name = "responseBody", columnDefinition = "TEXT")
+  private String responseBody;
   @Column(name = "dateCreated")
   private LocalDateTime dateCreated;
 }
