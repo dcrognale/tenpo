@@ -57,14 +57,20 @@ public class AdderService {
   }
 
   @PostConstruct
-  @Scheduled(fixedRate = DELAY)
-  private void getPercentage() throws RetryException {
+  public void onStartup() throws RetryException {
+    getPercentage();
+  }
 
+  @Scheduled(fixedRate = DELAY)
+  public void onSchedule() throws RetryException {
+    getPercentage();
+  }
+
+  private void getPercentage() throws RetryException {
     PercentageDTO percentageDTO = callApiWithRetries();
     this.percentaje = (percentageDTO.getValue() / 100) + 1;
     System.out.println("Current percentage: " + percentaje);
   }
-
 
   @Retryable(value = {RetryException.class}, maxAttempts = 3, backoff = @Backoff(delay = 5000))
   private PercentageDTO callApiWithRetries() throws RetryException {

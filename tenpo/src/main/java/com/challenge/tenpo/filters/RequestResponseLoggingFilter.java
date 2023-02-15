@@ -1,5 +1,6 @@
 package com.challenge.tenpo.filters;
 
+import com.challenge.tenpo.services.LogService;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.servlet.Filter;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -24,8 +26,8 @@ public class RequestResponseLoggingFilter implements Filter {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(RequestResponseLoggingFilter.class);
 
-  //@Autowired
-  //LogService logService;
+  @Autowired
+  LogService logService;
 
   @Override
   public void doFilter(
@@ -41,7 +43,7 @@ public class RequestResponseLoggingFilter implements Filter {
     byte[] responseBody = resp.getContentAsByteArray();
     byte[] requestBody = req.getContentAsByteArray();
 
-    //logService.logRequest(resp, req, responseBody, requestBody);
+    logService.logRequest(resp, req, responseBody, requestBody);
 
     LOGGER.info("Tenpo: Request body = {}", new String(requestBody, StandardCharsets.UTF_8));
 

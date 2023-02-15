@@ -32,13 +32,15 @@ public class LogService {
     String reqJson = ow.writeValueAsString(requestBody);
     String respJson = ow.writeValueAsString(responseBody);
 
-    LogEntity.builder()
+    LogEntity entity = LogEntity.builder()
         .dateCreated(LocalDateTime.now())
         .endpoint(req.getRequestURI())
         .httpStatus(resp.getStatus())
         .responseBody(respJson)
         .requestBody(reqJson)
         .build();
+
+    logRepository.save(entity);
   }
 
   public SearchResult getHistory(LocalDateTime from, LocalDateTime to, Integer page) {
