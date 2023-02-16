@@ -7,14 +7,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Builder
+@Getter
+@Setter
 @Entity
-@Table(name = "audit_log")
+@Table(name = "audits")
 public class LogEntity {
+
+  public LogEntity() {
+
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +27,10 @@ public class LogEntity {
   private String endpoint;
   @Column(name = "httpStatus")
   private Integer httpStatus;
-  @Column(name = "requestBody", columnDefinition = "TEXT")
-  private String requestBody;
   @Column(name = "responseBody", columnDefinition = "TEXT")
   private String responseBody;
+  @Column(name = "errorMessage", columnDefinition = "TEXT")
+  private String errorMessage;
   @Column(name = "dateCreated")
   private LocalDateTime dateCreated;
 }

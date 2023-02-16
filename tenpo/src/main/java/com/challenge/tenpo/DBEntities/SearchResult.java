@@ -2,10 +2,10 @@ package com.challenge.tenpo.DBEntities;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class SearchResult {
   private Integer pages;
   private Long total;

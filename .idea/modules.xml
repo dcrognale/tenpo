@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/percentageAPI/percentageAPI.iml" filepath="$PROJECT_DIR$/percentageAPI/percentageAPI.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tenpo/tenpo.iml" filepath="$PROJECT_DIR$/tenpo/tenpo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tenpo/tenpoAPI.iml" filepath="$PROJECT_DIR$/tenpo/tenpoAPI.iml" />
     </modules>
   </component>
 </project>

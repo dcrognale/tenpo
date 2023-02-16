@@ -3,7 +3,12 @@ package com.challenge.tenpo.services
 import com.challenge.tenpo.repositories.LogRepository
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.mock.web.MockHttpServletResponse
+import org.springframework.web.util.ContentCachingRequestWrapper
+import org.springframework.web.util.ContentCachingResponseWrapper
 import spock.lang.Specification
+
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 class LogServiceTest extends Specification {
 
@@ -20,24 +25,26 @@ class LogServiceTest extends Specification {
         given: "call getHistory"
         MockHttpServletRequest req = new MockHttpServletRequest()
         MockHttpServletResponse res = new MockHttpServletResponse()
+        res.setStatus(200)
+        ContentCachingRequestWrapper reqWrapper = new ContentCachingRequestWrapper((HttpServletRequest) req);
+        ContentCachingResponseWrapper respWrapper = new ContentCachingResponseWrapper((HttpServletResponse) res);
 
         when:
-        logService.logRequest(res, req, "responseBody", "requestBody")
+        logService.logRequest(respWrapper, reqWrapper)
 
         then:
         1 * logRepositoryMock.save(_)
     }
 
-    def "When getHistory with not date range, expect 500"() {
+    def "When page is not present, expect 500"() {
         given:
-        def localFrom = null
-        def localTo = null
+        def page = null
 
         when:
-        logService.getHistory(localFrom, localTo, 1)
+        logService.getHistory(page)
 
         then:
         IllegalArgumentException ex = thrown()
-        ex.message.contains('From and To values are mandatories.')
+        ex.message.contains('Page value is mandatory')
     }
 }

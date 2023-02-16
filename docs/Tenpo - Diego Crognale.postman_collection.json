@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "992f965e-4ba1-48cf-aa72-efdbc4113c6f",
+		"name": "Tenpo - Diego Crognale",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1188109"
+	},
+	"item": [
+		{
+			"name": "GET to calculate",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/operation?value1=5&value2=5",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"operation"
+					],
+					"query": [
+						{
+							"key": "value1",
+							"value": "5"
+						},
+						{
+							"key": "value2",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/logs?page=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"logs"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2023-02-14T10:00:00",
+							"disabled": true
+						},
+						{
+							"key": "to",
+							"value": "2023-02-28T23:59:00",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Percentage from external API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/percentage/available",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"percentage",
+						"available"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

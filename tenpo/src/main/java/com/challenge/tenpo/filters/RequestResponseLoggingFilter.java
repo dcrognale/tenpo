@@ -1,11 +1,9 @@
 package com.challenge.tenpo.filters;
 
 import com.challenge.tenpo.services.LogService;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -33,22 +31,25 @@ public class RequestResponseLoggingFilter implements Filter {
   public void doFilter(
       ServletRequest request,
       ServletResponse response,
-      FilterChain filterChain) throws IOException, ServletException {
+      FilterChain filterChain) {
 
-    ContentCachingRequestWrapper req = new ContentCachingRequestWrapper((HttpServletRequest) request);
-    ContentCachingResponseWrapper resp = new ContentCachingResponseWrapper((HttpServletResponse) response);
+    try {
+      ContentCachingRequestWrapper req = new ContentCachingRequestWrapper((HttpServletRequest) request);
+      ContentCachingResponseWrapper resp = new ContentCachingResponseWrapper((HttpServletResponse) response);
 
-    filterChain.doFilter(req, resp);
+      filterChain.doFilter(req, resp);
 
-    byte[] responseBody = resp.getContentAsByteArray();
-    byte[] requestBody = req.getContentAsByteArray();
+      byte[] responseBody = resp.getContentAsByteArray();
+      byte[] requestBody = req.getContentAsByteArray();
 
-    logService.logRequest(resp, req, responseBody, requestBody);
+      logService.logRequest(resp, req);
 
-    LOGGER.info("Tenpo: Request body = {}", new String(requestBody, StandardCharsets.UTF_8));
+      LOGGER.info("Tenpo: Request body = {}", new String(requestBody, StandardCharsets.UTF_8));
 
-    LOGGER.info("Tenpo: Response body = {}", new String(responseBody, StandardCharsets.UTF_8));
+      LOGGER.info("Tenpo: Response body = {}", new String(responseBody, StandardCharsets.UTF_8));
 
-    resp.copyBodyToResponse();
+    } catch (Exception ex) {
+      LOGGER.error("Tenpo - RequestResponseLoggingFilter : " + ex.getMessage());
+    }
   }
 }

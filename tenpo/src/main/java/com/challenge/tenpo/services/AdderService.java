@@ -28,9 +28,6 @@ public class AdderService {
   private final RestTemplate restTemplate;
   private static final String VALIDATION_PERCENTAGE_ERROR = "Percentage is not possible to calculate";
 
-  @Value("${MAX_RETRY}")
-  private Integer maxRetry;
-
   @Value("${BASE_PATH}")
   private String basePath;
 
