@@ -22,8 +22,6 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 @Slf4j
 public class RequestResponseLoggingFilter implements Filter {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(RequestResponseLoggingFilter.class);
-
   @Autowired
   LogService logService;
 
@@ -44,12 +42,12 @@ public class RequestResponseLoggingFilter implements Filter {
 
       logService.logRequest(resp, req);
 
-      LOGGER.info("Tenpo: Request body = {}", new String(requestBody, StandardCharsets.UTF_8));
+      log.info("Tenpo: Request body = {}", new String(requestBody, StandardCharsets.UTF_8));
 
-      LOGGER.info("Tenpo: Response body = {}", new String(responseBody, StandardCharsets.UTF_8));
+      log.info("Tenpo: Response body = {}", new String(responseBody, StandardCharsets.UTF_8));
 
     } catch (Exception ex) {
-      LOGGER.error("Tenpo - RequestResponseLoggingFilter : " + ex.getMessage());
+      log.error("Tenpo - RequestResponseLoggingFilter : " + ex.getMessage());
     }
   }
 }
